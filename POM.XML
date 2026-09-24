@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         O Spring Boot exige que todo projeto "herde" de um parent POM.
+         É esse parent que já traz versões compatíveis de dependências
+         pré-testadas entre si, então você não precisa declarar versão
+         manualmente na maioria dos casos.
+         ============================================================ -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/> <!-- busca o parent no repositório, não localmente -->
+    </parent>
+
+    <!-- ============================================================
+         Identidade do projeto (o "RG" da sua aplicação no Maven).
+         groupId  = geralmente o pacote raiz / organização
+         artifactId = nome do projeto (vira o nome do .jar gerado)
+         version  = versão do seu projeto (não da biblioteca)
+         ============================================================ -->
+    <groupId>com.exemplo</groupId>
+    <artifactId>sala-soap-ws</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>sala-soap-ws</name>
+    <description>Webservice SOAP com Spring Boot - projeto didatico</description>
+
+    <!-- ============================================================
+         Propriedades globais do projeto.
+         Definir a versão do Java aqui evita divergência entre o que
+         o Eclipse compila e o que o Maven espera.
+         ============================================================ -->
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- ============================================================
+             Núcleo do Spring Boot para Web Services SOAP.
+             Traz o Spring-WS, responsável por publicar o endpoint,
+             fazer o marshalling/unmarshalling XML <-> Java e gerar
+             o WSDL automaticamente a partir do XSD.
+             ============================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+
+        <!-- ============================================================
+             wsdl4j: biblioteca usada internamente pelo Spring-WS para
+             gerar dinamicamente o WSDL a partir do contrato (XSD).
+             Sem ela, o DefaultWsdl11Definition (próxima etapa) não roda.
+             ============================================================ -->
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+        </dependency>
+
+        <!-- ============================================================
+             JAXB: converte as classes Java geradas a partir do XSD
+             (via plugin abaixo) em XML e vice-versa. A partir do Java 11
+             o JAXB saiu do JDK, então precisa ser adicionado manualmente.
+             ============================================================ -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+
+        <!-- ============================================================
+             Dependência de testes (JUnit, Mockito etc.), já vem pronta
+             no starter-test do Spring Boot. Útil quando for testar
+             os métodos do serviço mais adiante.
+             ============================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- ============================================================
+                 Plugin padrão do Spring Boot: empacota tudo (inclusive as
+                 dependências) num único .jar executável, e permite rodar
+                 a aplicação direto com "mvn spring-boot:run".
+                 ============================================================ -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- ============================================================
+                 Plugin essencial para o próximo passo do desenvolvimento:
+                 gera automaticamente as classes Java (requests, responses,
+                 tipos) a partir de um arquivo .xsd que define o contrato
+                 do serviço. Isso é o "contract-first", abordagem padrão
+                 do Spring-WS (diferente do JAX-WS, que costuma ser
+                 "code-first").
+                 As classes geradas caem em target/generated-sources.
+                 ============================================================ -->
+            <plugin>
+                <groupId>org.jvnet.jaxb</groupId>
+                <artifactId>jaxb-maven-plugin</artifactId>
+                <version>4.0.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Pasta onde o(s) arquivo(s) .xsd devem ficar -->
+                    <schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>
+                    <schemaIncludes>
+                        <include>*.xsd</include>
+                    </schemaIncludes>
+                    <!-- Pacote Java onde as classes geradas serão colocadas -->
+                    <generatePackage>com.exemplo.calculadora.model</generatePackage>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
