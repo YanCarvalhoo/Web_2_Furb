@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bindings version="3.0" xmlns="https://jakarta.ee/xml/ns/jaxb">
+  <!--
+
+Este arquivo foi gerado pela Eclipse Implementation of JAXB, v4.0.5 
+Consulte https://eclipse-ee4j.github.io/jaxb-ri 
+Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
+Gerado em: 2026.10.19 às 07:03:33 PM BRT
+  -->
+  <bindings scd="x-schema::tns" if-exists="true" auto-acknowledge="true" xmlns:tns="http://exemplo.com/sala-soap-ws/salas">
+    <schemaBindings map="false">
+      <package name="com.exemplo.salas.model"/>
+    </schemaBindings>
+    <bindings scd="tns:EntrarSalaRequest" if-exists="true" auto-acknowledge="true">
+      <class ref="com.exemplo.salas.model.EntrarSalaRequest"/>
+    </bindings>
+    <bindings scd="tns:EntrarSalaResponse" if-exists="true" auto-acknowledge="true">
+      <class ref="com.exemplo.salas.model.EntrarSalaResponse"/>
+    </bindings>
+  </bindings>
+</bindings>
+

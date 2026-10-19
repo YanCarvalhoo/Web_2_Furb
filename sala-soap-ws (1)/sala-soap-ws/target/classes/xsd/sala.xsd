@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.com/sala-soap-ws/salas"
+           targetNamespace="http://exemplo.com/sala-soap-ws/salas"
+           elementFormDefault="qualified">
+
+    <!-- ============================================================
+         Requisição enviada pelo jogador pedindo para entrar na sala
+         ============================================================ -->
+    <xs:element name="EntrarSalaRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="idSala" type="xs:string"/>
+                <xs:element name="nomeJogador" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ============================================================
+         Resposta do servidor informando se havia espaço na sala
+         ============================================================ -->
+    <xs:element name="EntrarSalaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sucesso" type="xs:boolean"/>
+                <xs:element name="mensagem" type="xs:string"/>
+                <xs:element name="vagasDisponiveis" type="xs:int"/>
+                <xs:element name="capacidadeMaxima" type="xs:int" default="4"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
