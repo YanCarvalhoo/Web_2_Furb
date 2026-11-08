@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CaixaService"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://caixa.webservice/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://caixa.webservice/">
+
+  <types>
+    <xsd:schema targetNamespace="http://caixa.webservice/" elementFormDefault="qualified">
+
+      <xsd:complexType name="Produto">
+        <xsd:sequence>
+          <xsd:element name="codigo" type="xsd:string"/>
+          <xsd:element name="nome" type="xsd:string"/>
+          <xsd:element name="preco" type="xsd:decimal"/>
+          <xsd:element name="estoque" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="Venda">
+        <xsd:sequence>
+          <xsd:element name="codigo" type="xsd:string"/>
+          <xsd:element name="data" type="xsd:string"/>
+          <xsd:element name="cliente" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProdutoArray">
+        <xsd:sequence>
+          <xsd:element name="item" type="tns:Produto" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="VendaArray">
+        <xsd:sequence>
+          <xsd:element name="item" type="tns:Venda" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+    </xsd:schema>
+  </types>
+
+  <!-- ===== Produto ===== -->
+  <message name="criarProdutoRequest">
+    <part name="produto" type="tns:Produto"/>
+  </message>
+  <message name="criarProdutoResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <message name="buscarProdutoRequest">
+    <part name="codigo" type="xsd:string"/>
+  </message>
+  <message name="buscarProdutoResponse">
+    <part name="produto" type="tns:Produto"/>
+  </message>
+
+  <message name="listarProdutosRequest">
+    <part name="vazio" type="xsd:string"/>
+  </message>
+  <message name="listarProdutosResponse">
+    <part name="produtos" type="tns:ProdutoArray"/>
+  </message>
+
+  <message name="atualizarProdutoRequest">
+    <part name="produto" type="tns:Produto"/>
+  </message>
+  <message name="atualizarProdutoResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <message name="excluirProdutoRequest">
+    <part name="codigo" type="xsd:string"/>
+  </message>
+  <message name="excluirProdutoResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <!-- ===== Venda ===== -->
+  <message name="criarVendaRequest">
+    <part name="venda" type="tns:Venda"/>
+  </message>
+  <message name="criarVendaResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <message name="buscarVendaRequest">
+    <part name="codigo" type="xsd:string"/>
+  </message>
+  <message name="buscarVendaResponse">
+    <part name="venda" type="tns:Venda"/>
+  </message>
+
+  <message name="listarVendasRequest">
+    <part name="vazio" type="xsd:string"/>
+  </message>
+  <message name="listarVendasResponse">
+    <part name="vendas" type="tns:VendaArray"/>
+  </message>
+
+  <message name="atualizarVendaRequest">
+    <part name="venda" type="tns:Venda"/>
+  </message>
+  <message name="atualizarVendaResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <message name="excluirVendaRequest">
+    <part name="codigo" type="xsd:string"/>
+  </message>
+  <message name="excluirVendaResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <!-- ===== Relacionamento venda x produto ===== -->
+  <message name="adicionarProdutoNaVendaRequest">
+    <part name="codigoVenda" type="xsd:string"/>
+    <part name="codigoProduto" type="xsd:string"/>
+  </message>
+  <message name="adicionarProdutoNaVendaResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <message name="removerProdutoDaVendaRequest">
+    <part name="codigoVenda" type="xsd:string"/>
+    <part name="codigoProduto" type="xsd:string"/>
+  </message>
+  <message name="removerProdutoDaVendaResponse">
+    <part name="resultado" type="xsd:boolean"/>
+  </message>
+
+  <message name="listarProdutosDaVendaRequest">
+    <part name="codigoVenda" type="xsd:string"/>
+  </message>
+  <message name="listarProdutosDaVendaResponse">
+    <part name="produtos" type="tns:ProdutoArray"/>
+  </message>
+
+  <portType name="CaixaPortType">
+    <operation name="criarProduto">
+      <input message="tns:criarProdutoRequest"/>
+      <output message="tns:criarProdutoResponse"/>
+    </operation>
+    <operation name="buscarProduto">
+      <input message="tns:buscarProdutoRequest"/>
+      <output message="tns:buscarProdutoResponse"/>
+    </operation>
+    <operation name="listarProdutos">
+      <input message="tns:listarProdutosRequest"/>
+      <output message="tns:listarProdutosResponse"/>
+    </operation>
+    <operation name="atualizarProduto">
+      <input message="tns:atualizarProdutoRequest"/>
+      <output message="tns:atualizarProdutoResponse"/>
+    </operation>
+    <operation name="excluirProduto">
+      <input message="tns:excluirProdutoRequest"/>
+      <output message="tns:excluirProdutoResponse"/>
+    </operation>
+    <operation name="criarVenda">
+      <input message="tns:criarVendaRequest"/>
+      <output message="tns:criarVendaResponse"/>
+    </operation>
+    <operation name="buscarVenda">
+      <input message="tns:buscarVendaRequest"/>
+      <output message="tns:buscarVendaResponse"/>
+    </operation>
+    <operation name="listarVendas">
+      <input message="tns:listarVendasRequest"/>
+      <output message="tns:listarVendasResponse"/>
+    </operation>
+    <operation name="atualizarVenda">
+      <input message="tns:atualizarVendaRequest"/>
+      <output message="tns:atualizarVendaResponse"/>
+    </operation>
+    <operation name="excluirVenda">
+      <input message="tns:excluirVendaRequest"/>
+      <output message="tns:excluirVendaResponse"/>
+    </operation>
+    <operation name="adicionarProdutoNaVenda">
+      <input message="tns:adicionarProdutoNaVendaRequest"/>
+      <output message="tns:adicionarProdutoNaVendaResponse"/>
+    </operation>
+    <operation name="removerProdutoDaVenda">
+      <input message="tns:removerProdutoDaVendaRequest"/>
+      <output message="tns:removerProdutoDaVendaResponse"/>
+    </operation>
+    <operation name="listarProdutosDaVenda">
+      <input message="tns:listarProdutosDaVendaRequest"/>
+      <output message="tns:listarProdutosDaVendaResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="CaixaBinding" type="tns:CaixaPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="criarProduto">
+      <soap:operation soapAction="criarProduto"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="buscarProduto">
+      <soap:operation soapAction="buscarProduto"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="listarProdutos">
+      <soap:operation soapAction="listarProdutos"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="atualizarProduto">
+      <soap:operation soapAction="atualizarProduto"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="excluirProduto">
+      <soap:operation soapAction="excluirProduto"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="criarVenda">
+      <soap:operation soapAction="criarVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="buscarVenda">
+      <soap:operation soapAction="buscarVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="listarVendas">
+      <soap:operation soapAction="listarVendas"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="atualizarVenda">
+      <soap:operation soapAction="atualizarVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="excluirVenda">
+      <soap:operation soapAction="excluirVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="adicionarProdutoNaVenda">
+      <soap:operation soapAction="adicionarProdutoNaVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="removerProdutoDaVenda">
+      <soap:operation soapAction="removerProdutoDaVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+    <operation name="listarProdutosDaVenda">
+      <soap:operation soapAction="listarProdutosDaVenda"/>
+      <input><soap:body use="literal" namespace="http://caixa.webservice/"/></input>
+      <output><soap:body use="literal" namespace="http://caixa.webservice/"/></output>
+    </operation>
+  </binding>
+
+  <service name="CaixaService">
+    <port name="CaixaPort" binding="tns:CaixaBinding">
+      <soap:address location="http://localhost:8000/caixa"/>
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,6 @@
+node_modules/
+.metadata/
+.env
+.env.*
+!.env.example
+*.log
